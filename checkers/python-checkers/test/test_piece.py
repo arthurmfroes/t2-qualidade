@@ -17,6 +17,7 @@ def mock_board():
 
 
 
+# Esse teste verifica se o construtor da classe Piece está atribuindo os valores corretos
 def test_get_name():
     piece = Piece("16WN")
     
@@ -24,6 +25,7 @@ def test_get_name():
 
 
 
+# Esse teste verifica se o método get_position está retornando a posição correta
 def test_get_position():
     piece = Piece("16WN")
     
@@ -31,6 +33,7 @@ def test_get_position():
 
 
 
+# Esse teste verifica se o método get_color está retornando a cor correta
 def test_get_color():
     piece = Piece("16WN")
 
@@ -38,6 +41,7 @@ def test_get_color():
 
 
 
+# Esse teste verifica se o método is_king está retornando o valor correto
 def test_is_king():
     king_piece = Piece("16WY")
     non_king_piece = Piece("16WN")
@@ -47,6 +51,7 @@ def test_is_king():
 
 
 
+# Esse teste verifica se o método set_position está atribuindo a posição correta
 def test_set_position():
     piece = Piece("16WN")
     piece.set_position("20")
@@ -55,6 +60,7 @@ def test_set_position():
 
 
 
+# Esse teste verifica se o método set_is_king está atribuindo o valor correto
 def test_set_is_king():
     piece = Piece("16WN")
     piece.set_is_king(True)
@@ -63,6 +69,7 @@ def test_set_is_king():
 
 
 
+# Esse teste verifica se o método set_has_eaten está atribuindo o valor correto
 def test_has_eaten():
     piece = Piece("16WN")
     piece.set_has_eaten(True)
@@ -71,6 +78,7 @@ def test_has_eaten():
 
 
 
+# Esse teste verifica se o método get_adjacent_squares retorna as casas adjacentes corretas
 def test_get_adjacent_squares(mock_board):
     piece = Piece("16WN")
     adjacent_squares = piece.get_adjacent_squares(mock_board)
@@ -79,14 +87,18 @@ def test_get_adjacent_squares(mock_board):
 
 
 
+# Esse teste verifica se o método get_adjacent_squares retorna as casas adjacentes corretas
 def test_get_adjacent_squares_consistency(mock_board):
     piece = Piece("16WN")
     adjacent_squares = piece.get_adjacent_squares(mock_board)
 
+    assert adjacent_squares == [(2, 0), (2, 2)]
     assert len(adjacent_squares) > 0
 
 
 
+# Esse teste verifica se o método get_moves retorna as jogadas corretas
+# quando não há peças adjacentes
 def test_get_moves_no_obstacles(mock_board):
     piece = Piece("16WN")
     mock_board.get_pieces_by_coords.return_value = [None, None]
@@ -100,6 +112,8 @@ def test_get_moves_no_obstacles(mock_board):
 
 
 
+# Esse teste verifica se o método get_moves retorna as jogadas corretas
+# quando há peças adjacentes
 def test_get_moves_with_obstacles(mock_board):
     piece = Piece("16WN")
     mock_piece = Mock()

@@ -30,8 +30,7 @@ def gui_coords():
         "top_left_coords": (100, 100)
     }
     
-
-
+# Esse teste verifica se o construtor da classe HeldPiece está atribuindo os valores corretos
 def test_initialization(mock_surface):
     offset = (10, 15)
     held_piece = HeldPiece(mock_surface, offset)
@@ -42,6 +41,8 @@ def test_initialization(mock_surface):
 
 
 
+# Esse teste verifica se a função draw_piece está desenhando a peça na posição correta
+# e chamando a função blit do display_surface corretamente com os argumentos corretos
 def test_draw_piece(held_piece, monkeypatch):
     pygame.init()
     monkeypatch.setattr(pygame.mouse, "get_pos", lambda: (200, 300))
@@ -55,6 +56,7 @@ def test_draw_piece(held_piece, monkeypatch):
 
 
 
+# Esse teste verifica se a função check_collision retorna None quando não há colisão
 def test_check_collision_no_collision(held_piece, gui_coords):
     rect_list = [
         Rect(*get_piece_gui_coords((2, 0), **gui_coords), 50, 50),
@@ -67,6 +69,8 @@ def test_check_collision_no_collision(held_piece, gui_coords):
 
 
 
+# Esse teste verifica se a função check_collision retorna o rect correto quando
+# há colisão entre o rect do held_piece e um dos rects da lista passada como argumento
 def test_check_collision_with_collision(held_piece, gui_coords):
     rect_list = [
         Rect(*get_piece_gui_coords((2, 0), **gui_coords), 50, 50),
@@ -80,6 +84,8 @@ def test_check_collision_with_collision(held_piece, gui_coords):
 
 
 
+# Esse teste verifica se a função check_collision retorna None quando a lista de rects
+# passada como argumento está vazia
 def test_check_collision_empty_list(held_piece):
     rect_list = []
     result = held_piece.check_collision(rect_list)
@@ -88,6 +94,8 @@ def test_check_collision_empty_list(held_piece):
 
 
 
+# Esse teste verifica se a função get_piece_gui_coords retorna as coordenadas corretas
+# para cada par de coordenadas (row, col) passado como argumento
 def test_offset_calculation_with_surface_mouse_offset(mock_surface):
     surface_pos = (200, 300)
     mouse_pos = (180, 280)

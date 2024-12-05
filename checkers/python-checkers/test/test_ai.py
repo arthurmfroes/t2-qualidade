@@ -20,8 +20,7 @@ def mock_board():
 def ai():
     return AI("W")
 
-
-
+# Esse teste verifica se o construtor da classe AI está atribuindo os valores corretos
 def test_get_value_no_winner(ai, mock_board):
     mock_board.get_pieces.return_value = [
         Piece("0WN"), Piece("1WN"), Piece("2BN"), Piece("3BN")
@@ -31,6 +30,8 @@ def test_get_value_no_winner(ai, mock_board):
 
 
 
+# Esse teste verifica se o método get_value está retornando o valor correto para o caso em que
+# o jogador ganha
 def test_get_value_player_wins(ai, mock_board):
     mock_board.get_winner.return_value = "W"
     mock_board.get_pieces.return_value = [
@@ -41,6 +42,8 @@ def test_get_value_player_wins(ai, mock_board):
 
 
 
+# Esse teste verifica se o método get_value está retornando o valor correto para o caso em que
+# o oponente ganha
 def test_get_value_opponent_wins(ai, mock_board):
     mock_board.get_winner.return_value = "B"
     mock_board.get_pieces.return_value = [
@@ -51,6 +54,8 @@ def test_get_value_opponent_wins(ai, mock_board):
 
 
 
+# Esse teste verifica se o método get_value está retornando o valor correto para o caso em que
+# o jogador tem mais peças que o oponente
 def test_get_value_more_player_pieces(ai, mock_board):
     mock_board.get_pieces.return_value = [
         Piece("0WN"), Piece("1WN"), Piece("2WN"), Piece("3BN")
@@ -60,6 +65,8 @@ def test_get_value_more_player_pieces(ai, mock_board):
 
 
 
+# Esse teste verifica se o método get_value está retornando o valor correto para o caso em que
+# o oponente tem mais peças que o jogador
 def test_get_value_more_opponent_pieces(ai, mock_board):
     mock_board.get_pieces.return_value = [
         Piece("0WN"), Piece("1BN"), Piece("2BN"), Piece("3BN")

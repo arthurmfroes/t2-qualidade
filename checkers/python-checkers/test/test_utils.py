@@ -10,6 +10,8 @@ from utils import (
     get_surface_mouse_offset
 )
 
+# Esse teste verifica se a função get_position_with_row_col retorna a posição correta
+# para cada par de coordenadas (row, col) passado como argumento
 def test_get_position_with_row_col():
     assert get_position_with_row_col(0, 0) == 0
     assert get_position_with_row_col(1, 0) == 4
@@ -20,6 +22,8 @@ def test_get_position_with_row_col():
 
 
 
+# Esse teste verifica se a função get_piece_position retorna a posição correta
+# para cada par de coordenadas (x, y) passado como argumento
 def test_get_piece_position():
     square_dist = 50
     top_left_coords = (100, 100)
@@ -43,6 +47,8 @@ def test_get_piece_position():
 
 
 
+# Esse teste verifica se a função get_piece_gui_coords retorna as coordenadas corretas
+# para cada par de coordenadas (row, col) passado como argumento
 def test_get_piece_gui_coords():
     square_dist = 50
     top_left_coords = (100, 100)
@@ -66,6 +72,8 @@ def test_get_piece_gui_coords():
 
 
 
+# Esse teste verifica se a função get_surface_mouse_offset retorna o offset correto
+# para cada par de coordenadas (surface_pos, mouse_pos) passado como argumento
 def test_get_surface_mouse_offset():
     surface_pos = (200, 300)
     mouse_pos = (150, 250)
