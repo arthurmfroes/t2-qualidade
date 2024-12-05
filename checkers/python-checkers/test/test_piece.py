@@ -3,19 +3,8 @@ import sys
 import os
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-from unittest.mock import Mock
+from board import Board
 from piece import Piece
-
-@pytest.fixture
-def mock_board():
-    board = Mock()
-    board.get_col_number.return_value = 1
-    board.get_row_number.return_value = 3
-    board.get_color_up.return_value = "W"
-
-    return board
-
-
 
 # Esse teste verifica se o construtor da classe Piece está atribuindo os valores corretos
 def test_get_name():
@@ -79,68 +68,54 @@ def test_has_eaten():
 
 
 # Esse teste verifica se o método get_adjacent_squares retorna as casas adjacentes corretas
-def test_get_adjacent_squares(mock_board):
+def test_get_adjacent_squares():
     piece = Piece("16WN")
-    adjacent_squares = piece.get_adjacent_squares(mock_board)
+    board = Board([piece], "W")
+    adjacent_squares = piece.get_adjacent_squares(board)
 
     assert adjacent_squares == [(2, 0), (2, 2)]
-
-
-
-# Esse teste verifica se o método get_adjacent_squares retorna as casas adjacentes corretas
-def test_get_adjacent_squares_consistency(mock_board):
-    piece = Piece("16WN")
-    adjacent_squares = piece.get_adjacent_squares(mock_board)
-
-    assert adjacent_squares == [(2, 0), (2, 2)]
-    assert len(adjacent_squares) > 0
 
 
 
 # Esse teste verifica se o método get_moves retorna as jogadas corretas
 # quando não há peças adjacentes
-def test_get_moves_no_obstacles(mock_board):
+def test_get_moves_no_obstacles():
     piece = Piece("16WN")
-    mock_board.get_pieces_by_coords.return_value = [None, None]
-    mock_board.has_piece.return_value = False
-    mock_board.get_col_number.return_value = 1
-    mock_board.get_row_number.return_value = 3
+    board = Board([piece], "W")
 
-    moves = piece.get_moves(mock_board)
+    moves = piece.get_moves(board)
 
     assert moves == [{"position": "8", "eats_piece": False}, {"position": "9", "eats_piece": False}]
 
 
 
+def test_get_moves_out_of_bounds():
+    piece = Piece("8WN")
+    board = Board([piece], "W")
+
+    moves = piece.get_moves(board)
+
+    assert moves == [{"position": "4", "eats_piece": False}]
+
+
 # Esse teste verifica se o método get_moves retorna as jogadas corretas
 # quando há peças adjacentes
-def test_get_moves_with_obstacles(mock_board):
+def test_get_moves_with_obstacles():
     piece = Piece("16WN")
-    mock_piece = Mock()
-    mock_piece.get_color.return_value = "B"
-    mock_board.get_pieces_by_coords.return_value = [mock_piece, None]
-    mock_board.has_piece.side_effect = lambda pos: pos == "5"
-    mock_board.get_col_number.return_value = 1
-    mock_board.get_row_number.return_value = 3
+    board = Board([piece, Piece("8WN")], "W")
 
-    moves = piece.get_moves(mock_board)
+    moves = piece.get_moves()
 
     assert moves == [{"position": "9", "eats_piece": False}]
 
 
 
-# def test_get_moves_with_eating(mock_board):
-#     piece = Piece("16WN")
-#     mock_piece = Mock()
-#     mock_piece.get_color.return_value = "B"
-#     mock_board.get_pieces_by_coords.return_value = [mock_piece, None]
-#     mock_board.has_piece.side_effect = lambda pos: pos == "25"
-#     mock_board.get_col_number.side_effect = lambda pos: 1 if pos == 16 else 2
-#     mock_board.get_row_number.side_effect = lambda pos: 3 if pos == 16 else 4
+# Esse teste verifica se o método get_moves retorna as jogadas corretas
+# quando há peças adjacentes e é possível comer uma peça
+def test_get_moves_with_eating():
+    piece = Piece("16WN")
+    board = Board([piece, Piece("9BN")], "W")
 
-#     print(mock_board.get_col_number(16))
-#     print(mock_board.get_row_number(16))
-
-#     moves = piece.get_moves(mock_board)
+    moves = piece.get_moves(board)
     
-#     assert moves == [{"position": "25", "eats_piece": True}]
+    assert moves == [{"position": "9", "eats_piece": True}]
