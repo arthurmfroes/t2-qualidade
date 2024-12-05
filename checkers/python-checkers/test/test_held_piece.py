@@ -8,8 +8,6 @@ from pygame import Surface, Rect
 import pygame
 from held_piece import HeldPiece
 from utils import (
-    get_position_with_row_col,
-    get_piece_position,
     get_piece_gui_coords,
     get_surface_mouse_offset
 )
