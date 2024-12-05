@@ -16,8 +16,6 @@ def mock_board():
 
     return board
 
-
-
 @pytest.fixture
 def ai():
     return AI("W")

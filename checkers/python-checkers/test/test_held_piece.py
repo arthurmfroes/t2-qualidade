@@ -31,6 +31,7 @@ def gui_coords():
     }
     
 
+
 def test_initialization(mock_surface):
     offset = (10, 15)
     held_piece = HeldPiece(mock_surface, offset)
