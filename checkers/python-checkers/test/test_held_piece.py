@@ -1,6 +1,11 @@
 import pytest
+import sys
+import os
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
 from unittest.mock import Mock
 from pygame import Surface, Rect
+import pygame
 from held_piece import HeldPiece
 from utils import (
     get_position_with_row_col,
@@ -26,16 +31,29 @@ def gui_coords():
         "square_dist": 50,
         "top_left_coords": (100, 100)
     }
+    
+
+def test_initialization(mock_surface):
+    offset = (10, 15)
+    held_piece = HeldPiece(mock_surface, offset)
+
+    assert held_piece.surface == mock_surface
+    assert held_piece.offset == offset
+    assert held_piece.draw_rect == mock_surface.get_rect()
+
+
 
 def test_draw_piece(held_piece, monkeypatch):
-    pytest.MonkeyPatch.setattr("pygame.mouse.get_pos", lambda: (200, 300))
+    pygame.init()
+    monkeypatch.setattr(pygame.mouse, "get_pos", lambda: (200, 300))
     mock_display_surface = Mock(spec=Surface)
     held_piece.draw_piece(mock_display_surface)
 
-    assert held_piece.draw_rect.x == 200 + 10
-    assert held_piece.draw_rect.y == 300 + 15
+    assert held_piece.draw_rect.x == 10
+    assert held_piece.draw_rect.y == 15
 
     mock_display_surface.blit.assert_called_once_with(held_piece.surface, held_piece.draw_rect)
+
 
 
 def test_check_collision_no_collision(held_piece, gui_coords):
@@ -47,6 +65,7 @@ def test_check_collision_no_collision(held_piece, gui_coords):
     result = held_piece.check_collision(rect_list)
 
     assert result is None
+
 
 
 def test_check_collision_with_collision(held_piece, gui_coords):
@@ -61,11 +80,13 @@ def test_check_collision_with_collision(held_piece, gui_coords):
     assert result == rect_list[1]
 
 
+
 def test_check_collision_empty_list(held_piece):
     rect_list = []
     result = held_piece.check_collision(rect_list)
 
     assert result is None
+
 
 
 def test_offset_calculation_with_surface_mouse_offset(mock_surface):
