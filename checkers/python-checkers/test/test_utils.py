@@ -1,4 +1,8 @@
 import pytest
+import sys
+import os
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
 from utils import (
     get_position_with_row_col,
     get_piece_position,
@@ -12,6 +16,8 @@ def test_get_position_with_row_col():
     assert get_position_with_row_col(0, 2) == 1
     assert get_position_with_row_col(2, 7) == 11
     assert get_position_with_row_col(7, 7) == 31
+    assert isinstance(get_position_with_row_col(0, 0), int)
+
 
 
 def test_get_piece_position():
@@ -30,6 +36,12 @@ def test_get_piece_position():
     coords = (50, 50)
     assert get_piece_position(coords, square_dist, top_left_coords) == -5
 
+    coords = (-50, -50)
+    assert get_piece_position(coords, square_dist, top_left_coords) == -14
+
+    assert isinstance(get_piece_position(coords, square_dist, top_left_coords), int)
+
+
 
 def test_get_piece_gui_coords():
     square_dist = 50
@@ -46,6 +58,12 @@ def test_get_piece_gui_coords():
 
     coords = (7, 7)
     assert get_piece_gui_coords(coords, square_dist, top_left_coords) == (450, 450)
+
+    coords = (-1, -1)
+    assert get_piece_gui_coords(coords, square_dist, top_left_coords) == (50, 50)
+
+    assert isinstance(get_piece_gui_coords(coords, square_dist, top_left_coords), tuple)
+
 
 
 def test_get_surface_mouse_offset():
@@ -64,3 +82,9 @@ def test_get_surface_mouse_offset():
     surface_pos = (0, 0)
     mouse_pos = (0, 0)
     assert get_surface_mouse_offset(surface_pos, mouse_pos) == (0, 0)
+
+    surface_pos = (-100, -100)
+    mouse_pos = (-150, -150)
+    assert get_surface_mouse_offset(surface_pos, mouse_pos) == (50, 50)
+
+    assert isinstance(get_surface_mouse_offset(surface_pos, mouse_pos), tuple)
