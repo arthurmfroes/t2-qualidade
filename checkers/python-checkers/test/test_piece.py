@@ -6,7 +6,7 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')
 from board import Board
 from piece import Piece
 
-# Esse teste verifica se o construtor da classe Piece está atribuindo os valores corretos
+# Esse teste verifica se o método get_name está retornando o nome correto
 def test_get_name():
     piece = Piece("16WN")
     
@@ -103,7 +103,7 @@ def test_get_moves_out_of_bounds():
 
 
 # Esse teste verifica se o método get_moves retorna as jogadas corretas
-# quando há peças adjacentes
+# quando há peças adjacentes de mesma cor
 def test_get_moves_with_obstacles():
     piece = Piece("12WN")
     board = Board([piece, Piece("8WN")], "W")

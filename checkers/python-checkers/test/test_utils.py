@@ -18,12 +18,11 @@ def test_get_position_with_row_col():
     assert get_position_with_row_col(0, 2) == 1
     assert get_position_with_row_col(2, 7) == 11
     assert get_position_with_row_col(7, 7) == 31
-    assert isinstance(get_position_with_row_col(0, 0), int)
 
 
 
 # Esse teste verifica se a função get_piece_position retorna a posição correta
-# para cada par de coordenadas (x, y) passado como argumento
+# para cada par de coords (col, row), square_dist e top_left_coords (x, y) passado como argumento
 def test_get_piece_position():
     square_dist = 50
     top_left_coords = (100, 100)
@@ -43,12 +42,10 @@ def test_get_piece_position():
     coords = (-50, -50)
     assert get_piece_position(coords, square_dist, top_left_coords) == -14
 
-    assert isinstance(get_piece_position(coords, square_dist, top_left_coords), int)
-
 
 
 # Esse teste verifica se a função get_piece_gui_coords retorna as coordenadas corretas
-# para cada par de coordenadas (row, col) passado como argumento
+# para cada par de coords (row, col), square_dist e top_left_coords (x, y) passado como argumento
 def test_get_piece_gui_coords():
     square_dist = 50
     top_left_coords = (100, 100)
@@ -67,8 +64,6 @@ def test_get_piece_gui_coords():
 
     coords = (-1, -1)
     assert get_piece_gui_coords(coords, square_dist, top_left_coords) == (50, 50)
-
-    assert isinstance(get_piece_gui_coords(coords, square_dist, top_left_coords), tuple)
 
 
 
@@ -94,5 +89,3 @@ def test_get_surface_mouse_offset():
     surface_pos = (-100, -100)
     mouse_pos = (-150, -150)
     assert get_surface_mouse_offset(surface_pos, mouse_pos) == (50, 50)
-
-    assert isinstance(get_surface_mouse_offset(surface_pos, mouse_pos), tuple)

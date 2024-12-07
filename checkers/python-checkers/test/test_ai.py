@@ -3,108 +3,104 @@ import sys
 import os
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-from unittest.mock import Mock
 from ai import AI
 from board import Board
 from piece import Piece
 
 @pytest.fixture
-def mock_board():
-    board = Mock(spec=Board)
-    board.get_winner.return_value = None
-    board.get_color_up.return_value = "W"
+def board():
+    pieces = [
+        Piece("0WN"), Piece("1WN"), Piece("2BN"), Piece("3BN")
+    ]
 
-    return board
+    return Board(pieces, "W")
 
 @pytest.fixture
 def ai():
     return AI("W")
 
 # Esse teste verifica se o construtor da classe AI está atribuindo os valores corretos
-def test_get_value_no_winner(ai, mock_board):
-    mock_board.get_pieces.return_value = [
-        Piece("0WN"), Piece("1WN"), Piece("2BN"), Piece("3BN")
-    ]
-
-    assert ai.get_value(mock_board) == 0
+def test_get_value_no_winner(ai, board):
+    assert ai.get_value(board) == 0
 
 
 
 # Esse teste verifica se o método get_value está retornando o valor correto para o caso em que
-# o jogador ganha
-def test_get_value_player_wins(ai, mock_board):
-    mock_board.get_winner.return_value = "W"
-    mock_board.get_pieces.return_value = [
+# a ai vence
+def test_get_value_ai_wins(ai, board):
+    board.pieces = [
         Piece("0WN"), Piece("1WN"), Piece("2WN"), Piece("3WN")
     ]
+    board.get_winner = lambda: "W"
 
-    assert ai.get_value(mock_board) == 2
+    assert ai.get_value(board) == 2
 
 
 
 # Esse teste verifica se o método get_value está retornando o valor correto para o caso em que
-# o oponente ganha
-def test_get_value_opponent_wins(ai, mock_board):
-    mock_board.get_winner.return_value = "B"
-    mock_board.get_pieces.return_value = [
+# o oponente ganhe
+def test_get_value_player_wins(ai, board):
+    board.pieces = [
         Piece("0BN"), Piece("1BN"), Piece("2BN"), Piece("3BN")
     ]
+    board.get_winner = lambda: "B"
 
-    assert ai.get_value(mock_board) == -2
+    assert ai.get_value(board) == -2
 
 
 
 # Esse teste verifica se o método get_value está retornando o valor correto para o caso em que
 # o jogador tem mais peças que o oponente
-def test_get_value_more_player_pieces(ai, mock_board):
-    mock_board.get_pieces.return_value = [
+def test_get_value_more_ai_pieces(ai, board):
+    board.pieces = [
         Piece("0WN"), Piece("1WN"), Piece("2WN"), Piece("3BN")
     ]
 
-    assert ai.get_value(mock_board) == 1
+    assert ai.get_value(board) == 1
 
 
 
 # Esse teste verifica se o método get_value está retornando o valor correto para o caso em que
 # o oponente tem mais peças que o jogador
-def test_get_value_more_opponent_pieces(ai, mock_board):
-    mock_board.get_pieces.return_value = [
+def test_get_value_more_player_pieces(ai, board):
+    board.pieces = [
         Piece("0WN"), Piece("1BN"), Piece("2BN"), Piece("3BN")
     ]
 
-    assert ai.get_value(mock_board) == -1
+    assert ai.get_value(board) == -1
 
 
 
-# def test_minimax(ai, mock_board):
-#     pieces = [
-#         Mock(spec=Piece), Mock(spec=Piece), Mock(spec=Piece), Mock(spec=Piece)
-#     ]
-#     pieces[0].get_moves.return_value = [{"position": "4", "eats_piece": False}]
-#     pieces[1].get_moves.return_value = [{"position": "5", "eats_piece": False}]
-#     pieces[2].get_moves.return_value = [{"position": "6", "eats_piece": False}]
-#     pieces[3].get_moves.return_value = [{"position": "7", "eats_piece": False}]
-#     mock_board.get_pieces.return_value = pieces
-    
-#     assert ai.minimax(mock_board, True, 1, "W") == 1
+# Esse teste verifica se o método minimax está retornando o valor correto para o caso para
+# maximizar
+def test_minimax_maximize(ai, board):
+    board.pieces = [
+        Piece("17WN"), Piece("21WN"), Piece("9BN")
+    ]
+    board.get_winner = lambda: None
+    assert ai.minimax(board, True, 1, "W") == 1
+    assert ai.minimax(board, True, 2, "W") == 1
 
 
 
-# def test_get_move(ai, mock_board):
-#     pieces = [
-#         Mock(spec=Piece), Mock(spec=Piece), Mock(spec=Piece), Mock(spec=Piece)
-#     ]
-#     pieces[0].get_moves.return_value = [{"position": "4", "eats_piece": False}]
-#     pieces[1].get_moves.return_value = [{"position": "5", "eats_piece": False}]
-#     pieces[2].get_moves.return_value = [{"position": "6", "eats_piece": False}]
-#     pieces[3].get_moves.return_value = [{"position": "7", "eats_piece": False}]
-#     pieces[0].get_position.return_value = "0"
-#     pieces[1].get_position.return_value = "1"
-#     pieces[2].get_position.return_value = "2"
-#     pieces[3].get_position.return_value = "3"
-#     mock_board.get_pieces.return_value = pieces
-#     mock_board.get_color_up.return_value = "W"
-    
-#     move = ai.get_move(mock_board)
+# Esse teste verifica se o método minimax está retornando o valor correto para o caso para
+# minimizar
+def test_minimax_minimize(ai, board):
+    board.pieces = [
+        Piece("17WN"), Piece("21WN"), Piece("9BN")
+    ]
+    board.get_winner = lambda: None
+    assert ai.minimax(board, False, 1, "W") == 1
+    assert ai.minimax(board, False, 2, "W") == 0
 
-#     assert move in [{"position_to": "4", "position_from": "0"}, {"position_to": "5", "position_from": "1"}]
+
+
+# Esse teste verifica se o método get_move está retornando o movimento correto
+def test_get_move(ai, board):
+    board.pieces = [
+        Piece("17WN"), Piece("21WN"), Piece("9BN")
+    ]
+
+    moves = ai.get_move(board)
+
+    assert moves == {"position_from": "17", "position_to": "13"} 
