@@ -5,12 +5,12 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')
 
 # Dicionário para armazenar os mocks das imagens
 mocks = {
-    "black_piece.png": Mock(spec='pygame.Surface'),
-    "white_piece.png": Mock(spec='pygame.Surface'),
-    "black_king_piece.png": Mock(spec='pygame.Surface'),
-    "white_king_piece.png": Mock(spec='pygame.Surface'),
-    "marking.png": Mock(spec='pygame.Surface'),
-    "board.png": Mock(spec='pygame.Surface'),
+    "black_piece.png": "black_piece.png",
+    "white_piece.png": "white_piece.png",
+    "black_king_piece.png": "black_king_piece.png",
+    "white_king_piece.png": "white_king_piece.png",
+    "marking.png": "marking.png",
+    "board.png": "board.png",
 }
 
 # GUI specifications
@@ -31,18 +31,6 @@ def mock_pygame_image_load(path):
 # Aplicar o patch antes de importar pygame e outros módulos que carregam imagens
 with patch('pygame.image.load', side_effect=mock_pygame_image_load):
     import pygame
-
-    # Obtém o diretório principal do projeto
-    project_dir = os.path.dirname(os.path.dirname(__file__))
-
-    # Preload images com pygame.image.load que agora está mockado
-    BLACK_PIECE_SURFACE = pygame.image.load(os.path.join(project_dir, "images", "black_piece.png"))
-    WHITE_PIECE_SURFACE = pygame.image.load(os.path.join(project_dir, "images", "white_piece.png"))
-    BLACK_KING_PIECE_SURFACE = pygame.image.load(os.path.join(project_dir, "images", "black_king_piece.png"))
-    WHITE_KING_PIECE_SURFACE = pygame.image.load(os.path.join(project_dir, "images", "white_king_piece.png"))
-    MOVE_MARK = pygame.image.load(os.path.join(project_dir, "images", "marking.png"))
-    BOARD = pygame.image.load(os.path.join(project_dir, "images", "board.png"))
-
     from board import Board
     from piece import Piece
     from board_gui import BoardGUI
