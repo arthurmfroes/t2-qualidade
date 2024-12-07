@@ -4,14 +4,13 @@ import os
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from unittest.mock import Mock, patch
-import pytest
 import pygame
-from pprint import pprint
 
 from game_control import GameControl
 from piece import Piece
 from utils import get_piece_gui_coords
 
+# Função utilitária interna para obter a posição do mouse em relação a uma peça
 def get_mouse_pos_position(position):
     # Converter posição em linha e coluna
     row = position // 4
@@ -38,7 +37,6 @@ def test_game_control_init():
     assert game.get_winner() == None
 
 
-
 # Esse teste verifica se a função get_turn retorna o valor correto
 def test_game_control_ai_control():
     game = GameControl("W", True)
@@ -48,8 +46,7 @@ def test_game_control_ai_control():
     assert game.ai_control == None
 
 
-
-# Esse teste verifica se a função setup está criando o tabuleiro com as peças corretas
+# Esse teste verifica se a função setup está criando o tabuleiro com as peças corretas para um jogo novo
 def test_game_control_setup_pieces():
     game = GameControl("W", False)
     pieces = game.board.get_pieces()
@@ -59,34 +56,29 @@ def test_game_control_setup_pieces():
     assert num_black_pieces == 12
 
 
-
-# Esse teste verifica se a função hold_piece não atribui posição a peça caso não seja
-# o turno da peça clicada
+# Esse teste verifica se a função hold_piece não atribui posição a peça caso não seja o turno da peça clicada 
+# recebe uma posição de mouse e não atribui a peça clicada a variável held_piece
 def test_hold_piece_wrong_turn():
         game = GameControl("W", False)
         game.hold_piece(get_mouse_pos_position(0))
         assert game.held_piece == None
 
-
-
-# Esse teste verifica se a função hold_piece não atribui posição a peça caso não haja
-# peça na posição clicada
+# Esse teste verifica se a função hold_piece não atribui posição a peça caso não haja peça na posição clicada
+# recebe uma posição de mouse e não atribui nada a variável held_piece
 def test_hold_piece_no_piece():
         game = GameControl("W", False)
         game.hold_piece(get_mouse_pos_position(17))
         assert game.held_piece == None
 
-
-
 # Esse teste verifica se a função hold_piece atribui posição a peça corretamente
+# recebe uma posição de mouse e atribui a peça clicada a variável held_piece
 def test_hold_piece_valid():
         game = GameControl("W", False)
         game.hold_piece(get_mouse_pos_position(20))
         assert game.held_piece != None
-        
 
-
-
+# Esse teste verifica o movimento de uma peça sem captura
+# recebe uma posição de mouse e move a peça para a posição clicada
 def test_drag_and_drop_piece_without_capture():
     game = GameControl("W", False)
     game.board.get_pieces().clear()
@@ -113,9 +105,8 @@ def test_drag_and_drop_piece_without_capture():
     assert remaining_pieces[0].get_has_eaten() == False
     assert game.turn == 'B'
     
-
-
-
+# Esse teste verifica o movimento de uma peça com captura de peça adversária
+# recebe uma posição de mouse e move a peça para a posição clicada, capturando a peça adversária
 def test_drag_and_drop_piece_with_capture():
     game = GameControl("W", False)
     # Setup - Criar situação onde peça branca pode capturar peça preta
@@ -146,4 +137,3 @@ def test_drag_and_drop_piece_with_capture():
     assert len(remaining_pieces) == 1
     assert remaining_pieces[0].get_position() == '8'
     assert game.turn == 'B'
-    
