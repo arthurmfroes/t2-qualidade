@@ -69,7 +69,7 @@ def test_has_eaten():
 
 # Esse teste verifica se o método get_adjacent_squares retorna as casas adjacentes corretas
 def test_get_adjacent_squares():
-    piece = Piece("16WN")
+    piece = Piece("12WN")
     board = Board([piece], "W")
     adjacent_squares = piece.get_adjacent_squares(board)
 
@@ -80,31 +80,35 @@ def test_get_adjacent_squares():
 # Esse teste verifica se o método get_moves retorna as jogadas corretas
 # quando não há peças adjacentes
 def test_get_moves_no_obstacles():
-    piece = Piece("16WN")
+    piece = Piece("12WN")
     board = Board([piece], "W")
 
     moves = piece.get_moves(board)
+
+    print(moves)
 
     assert moves == [{"position": "8", "eats_piece": False}, {"position": "9", "eats_piece": False}]
 
 
 
+# Esse teste verifica se o método get_moves retorna as jogadas corretas
+# quando a peça está no limite do tabuleiro
 def test_get_moves_out_of_bounds():
-    piece = Piece("8WN")
+    piece = Piece("16WN")
     board = Board([piece], "W")
 
     moves = piece.get_moves(board)
 
-    assert moves == [{"position": "4", "eats_piece": False}]
+    assert moves == [{"position": "12", "eats_piece": False}]
 
 
 # Esse teste verifica se o método get_moves retorna as jogadas corretas
 # quando há peças adjacentes
 def test_get_moves_with_obstacles():
-    piece = Piece("16WN")
+    piece = Piece("12WN")
     board = Board([piece, Piece("8WN")], "W")
 
-    moves = piece.get_moves()
+    moves = piece.get_moves(board)
 
     assert moves == [{"position": "9", "eats_piece": False}]
 
@@ -114,7 +118,7 @@ def test_get_moves_with_obstacles():
 # quando há peças adjacentes e é possível comer uma peça
 def test_get_moves_with_eating():
     piece = Piece("16WN")
-    board = Board([piece, Piece("9BN")], "W")
+    board = Board([piece, Piece("12BN")], "W")
 
     moves = piece.get_moves(board)
     
