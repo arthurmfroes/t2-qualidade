@@ -19,7 +19,8 @@ def board():
 def ai():
     return AI("W")
 
-# Esse teste verifica se o construtor da classe AI está atribuindo os valores corretos
+# Esse teste verifica se o método get_value está retornando o valor correto para o caso em que
+# não há vencedor
 def test_get_value_no_winner(ai, board):
     assert ai.get_value(board) == 0
 
