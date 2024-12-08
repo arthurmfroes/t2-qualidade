@@ -42,7 +42,6 @@ def test_initialization(mock_surface):
 
 
 # Esse teste verifica se a função draw_piece está desenhando a peça na posição correta
-# e chamando a função blit do display_surface corretamente com os argumentos corretos
 def test_draw_piece(held_piece, monkeypatch):
     pygame.init()
     monkeypatch.setattr(pygame.mouse, "get_pos", lambda: (200, 300))
