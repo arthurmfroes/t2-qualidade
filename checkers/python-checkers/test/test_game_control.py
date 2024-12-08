@@ -133,4 +133,4 @@ def test_drag_and_drop_piece_with_capture():
         game.release_piece()
     
     remaining_pieces = game.board.get_pieces()
-    assert len(remaining_pieces) == 1324
+    assert len(remaining_pieces) == 1
