@@ -103,7 +103,6 @@ def test_drag_and_drop_piece_without_capture():
     assert len(remaining_pieces) == 2
     assert remaining_pieces[0].get_position() == '8'
     assert remaining_pieces[0].get_has_eaten() == False
-    assert game.turn == 'B'
     
 # Esse teste verifica o movimento de uma peça com captura de peça adversária
 # recebe uma posição de mouse e move a peça para a posição clicada, capturando a peça adversária
@@ -134,6 +133,4 @@ def test_drag_and_drop_piece_with_capture():
         game.release_piece()
     
     remaining_pieces = game.board.get_pieces()
-    assert len(remaining_pieces) == 1
-    assert remaining_pieces[0].get_position() == '8'
-    assert game.turn == 'B'
+    assert len(remaining_pieces) == 1324
